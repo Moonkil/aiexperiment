@@ -15,3 +15,14 @@ This simple Flask application extracts the BPM, chord progression, and lyrics fr
 3. Open `http://localhost:5000` in your browser and enter a YouTube URL.
 
 Note: Whisper models will be downloaded on first run for lyric transcription.
+
+### Troubleshooting
+
+If the server fails to start with an error similar to `RuntimeError: Numpy is not available`,
+install a compatible NumPy wheel manually:
+
+```bash
+pip install -U numpy
+```
+Some environments do not provide prebuilt NumPy packages, which can lead to this
+error when importing `librosa` or `whisper`.

@@ -2,13 +2,26 @@ import os
 import tempfile
 from flask import Flask, request, render_template_string
 import yt_dlp
-import librosa
-import numpy as np
 
 try:
+    import numpy as np
+except Exception as e:
+    raise RuntimeError(
+        "NumPy is required. Install it with 'pip install numpy'.") from e
+
+try:
+    import librosa
+except Exception as e:
+    raise RuntimeError(
+        "librosa failed to import. Ensure NumPy is installed: 'pip install numpy'."
+    ) from e
+
+whisper_import_error = None
+try:
     import whisper
-except Exception:
+except Exception as e:
     whisper = None
+    whisper_import_error = e
 
 app = Flask(__name__)
 
@@ -95,7 +108,7 @@ def analyze_chords(audio_file):
 
 def transcribe_audio(audio_file):
     if whisper is None:
-        return "Whisper not installed"
+        return f"Whisper not available: {whisper_import_error}"
     model = whisper.load_model("base")
     result = model.transcribe(audio_file)
     return result.get('text', '').strip()

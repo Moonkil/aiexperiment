@@ -1,5 +1,5 @@
 Flask
 yt_dlp
-librosa
 numpy
+librosa
 openai-whisper
